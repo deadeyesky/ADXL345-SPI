@@ -64,11 +64,11 @@ while(1):
        time1 = str(datetime.datetime.now().strftime('%S.%f'))
        axia = readadxl345()
 
-       file.write(str(axia[0])+','+str(axia[1])+','+str(axia[2])+','+time1+'\n')                   
+       file.write(str(axia[0]) + ',' + str(axia[1]) + ',' + str(axia[2]) + ',' + time1 + '\n')                   
 
        # Print data every "timeout" second
        elapsed = time.process_time()
        current = 0
        while(current < timeout):
-       current = time.process_time() - elapsed
+            current = time.process_time() - elapsed
 
