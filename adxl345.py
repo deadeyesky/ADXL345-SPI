@@ -4,20 +4,19 @@ import RPi.GPIO as GPIO
 
 # Setup SPI
 spi = spidev.SpiDev()
-spi.open(0,0)
+spi.open(0, 0)
 spi.mode = 3
 
 # Constants
-accres = 16
-accrate = 15        
+accres, accrate = 16, 15
+      
 
 # Set GPIO pins
 GPIO.setwarnings(False)
-cs1 = 17
-C_s2 = 22  
-GPIO.setup(C_s1, GPIO.OUT)
+cs1, cs2 = 17, 22  
+GPIO.setup(cs1, GPIO.OUT)
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(C_s2, GPIO.OUT)
+GPIO.setup(cs2, GPIO.OUT)
 GPIO.setmode(GPIO.BCM)
 
 
@@ -32,9 +31,9 @@ def initadxl345():
 
 # Read the ADXL x-y-z axia
 def readadxl345():
-    rx = spi.xfer2([242,0,0,0,0,0,0])
+    rx = spi.xfer2([242, 0, 0, 0, 0, 0, 0])
 
-    out = [rx[1] | (rx[2] << 8),rx[3] | (rx[4] << 8),rx[5] | (rx[6] << 8)]
+    out = [rx[1] | (rx[2] << 8), rx[3] | (rx[4] << 8), rx[5] | (rx[6] << 8)]
     # Format x-axis
     if (out[0] & (1<<16 - 1 )):
         out[0] = out[0] - (1<<16)
@@ -50,7 +49,7 @@ def readadxl345():
 # Initialize the ADXL345 accelerometer
 initadxl345()
 
-timeout=0.0003125/2 # timeout=1/samplerate=>not sufficient measurements. Half the time is sufficient (don't know why!)
+timeout = 0.0003125 / 2 # timeout=1/samplerate=>not sufficient measurements. Half the time is sufficient (don't know why!)
 
 timetosend = 1
 
@@ -65,7 +64,7 @@ while(1):
        time1 = str(datetime.datetime.now().strftime('%S.%f'))
        axia = readadxl345()
 
-       file.write(str(axia[0])+','+str(axia[1])+','+str(axia[2])+','+time1+',\n')                   
+       file.write(str(axia[0])+','+str(axia[1])+','+str(axia[2])+','+time1+'\n')                   
 
        # Print data every "timeout" second
        elapsed = time.process_time()
